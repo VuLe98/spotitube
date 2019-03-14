@@ -2,27 +2,26 @@ package dto;
 
 import com.spotitube.Playlist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistResponse {
 
-    private String name;
-    private List<Playlist> playlists;
+    private List<Playlist> playlists = new ArrayList<>();
+    private int length;
 
-    public String getName(){
-        return name;
+    public void addPlaylists(Playlist list){
+        playlists.add(list);
+    }
+    public void setLength(int length) {
+        this.length = length;
     }
 
-    public void setName(String name){
-        this.name = name;
+    public int getLength() {
+        return length;
     }
 
-    public List<Playlist> getPlaylist(){
+    public List<Playlist> getPlaylists(){
         return playlists;
     }
-
-    public void setPlayList(List<Playlist> playlist){
-        this.playlists = playlist;
-    }
-
 }

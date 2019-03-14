@@ -1,4 +1,4 @@
-package com.spotitube;
+package controller;
 
 import dto.LoginRequest;
 import dto.LoginResponse;

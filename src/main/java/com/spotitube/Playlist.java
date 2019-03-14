@@ -1,20 +1,13 @@
 package com.spotitube;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Playlist {
 
     private Integer id;
     private String name;
     private boolean owner;
-    private List<Track> tracks;
-
-    public Playlist(Integer id, String name, boolean owner, List<Track> tracks){
-        setId(id);
-        setName(name);
-        setOwner(owner);
-        setTracks(tracks);
-    }
+    private ArrayList<Track> tracks;
 
     public Integer getId(){
         return id;
@@ -40,11 +33,11 @@ public class Playlist {
         this.owner = owner;
     }
 
-    public List<Track> getTracks(){
+    public ArrayList<Track> getTracks(){
         return tracks;
     }
 
-    public void setTracks(List<Track> tracks){
+    public void setTracks(ArrayList<Track> tracks){
         this.tracks = tracks;
     }
 
