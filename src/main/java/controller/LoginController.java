@@ -1,5 +1,6 @@
 package controller;
 
+import database.DatabaseRequest;
 import dto.LoginRequest;
 import dto.LoginResponse;
 
@@ -12,12 +13,14 @@ import javax.ws.rs.core.Response;
 
     @Path("/")
     public class LoginController {
+        DatabaseRequest requestDB = new DatabaseRequest();
 
         @POST
         @Path("login")
         @Consumes("application/json")
         @Produces("application/json")
         public Response login(LoginRequest request){
+            requestDB.connectToDB();
             String token = "51246-kash-e7r";
             String user = "Vu";
 
