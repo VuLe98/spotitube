@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2012                    */
-/* Created on:     15-3-2019 10:53:03                           */
+/* Created on:     15-3-2019 11:37:52                           */
 /*==============================================================*/
 
 
@@ -80,10 +80,6 @@ if exists (select 1
    drop table "USER"
 go
 
-if exists(select 1 from systypes where name='DATE')
-   drop type DATE
-go
-
 if exists(select 1 from systypes where name='DESCRIPTION')
    drop type DESCRIPTION
 go
@@ -124,19 +120,16 @@ if exists(select 1 from systypes where name='PLAYCOUNT')
    drop type PLAYCOUNT
 go
 
+if exists(select 1 from systypes where name='PUBLICATION_DATE')
+   drop type PUBLICATION_DATE
+go
+
 if exists(select 1 from systypes where name='TOKEN')
    drop type TOKEN
 go
 
 if exists(select 1 from systypes where name='USERNAME')
    drop type USERNAME
-go
-
-/*==============================================================*/
-/* Domain: DATE                                                 */
-/*==============================================================*/
-create type DATE
-   from datetime
 go
 
 /*==============================================================*/
@@ -210,6 +203,13 @@ create type PLAYCOUNT
 go
 
 /*==============================================================*/
+/* Domain: PUBLICATION_DATE                                     */
+/*==============================================================*/
+create type PUBLICATION_DATE
+   from datetime
+go
+
+/*==============================================================*/
 /* Domain: TOKEN                                                */
 /*==============================================================*/
 create type TOKEN
@@ -230,10 +230,10 @@ create table PLAYLIST (
    U_NAME               USERNAME             not null,
    U_TOKEN              TOKEN                not null,
    P_ID                 ID                   not null,
-   P_NAME               NAME                 null,
-   P_OWNER              OWNER                null,
-   P_TRACK              NAME                 null,
-   constraint PK_PLAYLIST primary key nonclustered (U_NAME, U_TOKEN, P_ID)
+   P_TRACK              NAME                 not null,
+   P_NAME               NAME                 not null,
+   P_OWNER              OWNER                not null,
+   constraint PK_PLAYLIST primary key nonclustered (U_NAME, U_TOKEN, P_ID, P_TRACK)
 )
 go
 
@@ -251,14 +251,14 @@ go
 /*==============================================================*/
 create table TRACK (
    T_ID                 ID                   not null,
-   T_TITLE              NAME                 null,
-   T_PERFORMER          PERFORMER            null,
-   T_DURATION           DURATION             null,
+   T_TITLE              NAME                 not null,
+   T_PERFORMER          PERFORMER            not null,
+   T_DURATION           DURATION             not null,
    T_ALBUM              NAME                 null,
    T_PLAYCOUNT          PLAYCOUNT            null,
-   T_PUBLICATIONDATE    DATE                 null,
+   T_PUBLICATIONDATE    PUBLICATION_DATE     null,
    T_DESCRIPTION        DESCRIPTION          null,
-   T_OFFLINEAVAILABLE   O_AVAILABLE          null,
+   T_OFFLINEAVAILABLE   O_AVAILABLE          not null,
    constraint PK_TRACK primary key nonclustered (T_ID)
 )
 go
@@ -270,8 +270,9 @@ create table TRACK_IN_PLAYLIST (
    U_NAME               USERNAME             not null,
    U_TOKEN              TOKEN                not null,
    P_ID                 ID                   not null,
+   P_TRACK              NAME                 not null,
    T_ID                 ID                   not null,
-   constraint PK_TRACK_IN_PLAYLIST primary key (U_NAME, U_TOKEN, P_ID, T_ID)
+   constraint PK_TRACK_IN_PLAYLIST primary key (U_NAME, U_TOKEN, P_ID, P_TRACK, T_ID)
 )
 go
 
@@ -281,7 +282,8 @@ go
 create index TRACK_IN_PLAYLIST_FK on TRACK_IN_PLAYLIST (
 U_NAME ASC,
 U_TOKEN ASC,
-P_ID ASC
+P_ID ASC,
+P_TRACK ASC
 )
 go
 
@@ -299,7 +301,7 @@ go
 create table "USER" (
    U_NAME               USERNAME             not null,
    U_TOKEN              TOKEN                not null,
-   U_PASSWORD           PASSWORD             null,
+   U_PASSWORD           PASSWORD             not null,
    constraint PK_USER primary key nonclustered (U_NAME, U_TOKEN)
 )
 go
@@ -310,8 +312,8 @@ alter table PLAYLIST
 go
 
 alter table TRACK_IN_PLAYLIST
-   add constraint FK_TRACK_IN_TRACK_IN__PLAYLIST foreign key (U_NAME, U_TOKEN, P_ID)
-      references PLAYLIST (U_NAME, U_TOKEN, P_ID)
+   add constraint FK_TRACK_IN_TRACK_IN__PLAYLIST foreign key (U_NAME, U_TOKEN, P_ID, P_TRACK)
+      references PLAYLIST (U_NAME, U_TOKEN, P_ID, P_TRACK)
 go
 
 alter table TRACK_IN_PLAYLIST
