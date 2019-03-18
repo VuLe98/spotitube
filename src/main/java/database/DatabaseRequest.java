@@ -2,12 +2,13 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DatabaseRequest {
     Connection cnSpot = null;
 
-    public void connectToDB(){
+    public Connection connectToDB(){
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         }
@@ -20,5 +21,9 @@ public class DatabaseRequest {
         catch(SQLException e){
             System.out.println("Error connecting to a database" + e);
         }
+
+        return cnSpot;
     }
+
+
 }

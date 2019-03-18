@@ -15,23 +15,13 @@ public class PlaylistController {
 
     PlaylistResponse response = new PlaylistResponse();
 
-    Playlist deathmetal = new Playlist();
-    Playlist pop = new Playlist();
+    private Playlist deathmetal = new Playlist(1, "Death metal", true, new ArrayList<>());
+    private Playlist pop = new Playlist(2, "Pop", false, new ArrayList<>());
 
     @GET
     @Produces("application/json")
     @Consumes("application/json")
     public Response getAllPlaylists(@QueryParam("token") String token){
-
-        deathmetal.setId(1);
-        deathmetal.setName("Death metal");
-        deathmetal.setOwner(true);
-        deathmetal.setTracks(new ArrayList<>());
-
-        pop.setId(2);
-        pop.setName("Pop");
-        pop.setOwner(false);
-        pop.setTracks(new ArrayList<>());
 
         response.addPlaylists(deathmetal);
         response.addPlaylists(pop);
