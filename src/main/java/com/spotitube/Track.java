@@ -1,6 +1,7 @@
 package com.spotitube;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Track {
 
@@ -10,10 +11,21 @@ public class Track {
     private int duration;
     private String album;
     private int playcount;
-    private LocalDate publicationDate;
+    private String publicationDate;
     private String description;
     private Boolean offlineAvailable;
 
+    public Track(int id, String title, String performer, int duration, String album, int playcount, String publicationDate, String description, Boolean offlineAvailable) {
+        setId(id);
+        setTitle(title);
+        setPerformer(performer);
+        setDuration(duration);
+        setAlbum(album);
+        setPlaycount(playcount);
+        setPublicationDate(publicationDate);
+        setDescription(description);
+        setOfflineAvailable(offlineAvailable);
+    }
 
     public int getId() {
         return id;
@@ -63,11 +75,11 @@ public class Track {
         this.playcount = playcount;
     }
 
-    public LocalDate getPublicationDate() {
+    public String getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(LocalDate publicationDate) {
+    public void setPublicationDate(String publicationDate) {
         this.publicationDate = publicationDate;
     }
 

@@ -1,4 +1,4 @@
-package dto;
+package com.spotitube.dto;
 
 public class LoginRequest {
 
