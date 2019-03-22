@@ -1,17 +1,13 @@
 package com.spotitube.dao;
 
-import com.spotitube.Token;
+import com.spotitube.entities.Token;
 import com.spotitube.database.DatabaseRequest;
 
 import javax.inject.Inject;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,16 +21,23 @@ public class TokenDAO {
     public Token createTokenForUser(String username){
         Token token;
 
-        try(
+        try{
             Connection connection = request.connectToDB();
             PreparedStatement st = connection.prepareStatement("INSERT INTO TOKEN VALUES (?,?,?)");
-        ){
-            LocalDateTime dt = LocalDateTime.now().plusHours(24);
-            Date date = Date.from(dt.atZone( ZoneId.systemDefault()).toInstant());
+
+            //Verkrijg de verstrijkdatum (vandaag + 1)
+            Calendar cal = Calendar.getInstance();
+            Timestamp stamp = new Timestamp(new Date().getTime());
+            cal.setTimeInMillis(stamp.getTime());
+            cal.add(Calendar.HOUR,24);
+            stamp = new Timestamp(cal.getTime().getTime());
+
             String userToken = UUID.randomUUID().toString();
+
             st.setString(1,username);
             st.setString(2,userToken);
-            st.setDate(3, convertUtilToSql(date));
+            st.setTimestamp(3,stamp);
+
             st.executeQuery();
 
             token = new Token(username,userToken);
@@ -44,7 +47,6 @@ public class TokenDAO {
         }
         return token;
     }
-
 
     private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
         java.sql.Date sDate = new java.sql.Date(uDate.getTime());

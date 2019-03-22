@@ -3,7 +3,7 @@
 /* Created on:     21-3-2019 09:59:09                           */
 /*==============================================================*/
 
-
+USE Spotitube_Database;
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
    where r.fkeyid = object_id('PLAYLIST') and o.name = 'FK_PLAYLIST_USER_MET__USER')
@@ -258,7 +258,7 @@ go
 /* Domain: TOKEN                                                */
 /*==============================================================*/
 create type TOKEN
-   from varchar(15)
+   from varchar(256)
 go
 
 /*==============================================================*/
