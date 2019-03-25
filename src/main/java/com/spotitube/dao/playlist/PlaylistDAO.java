@@ -81,12 +81,13 @@ public class PlaylistDAO {
         return playlistlength;
     }
 
+
     public TrackResponse getContentOfPlaylist(int playlistID){
         TrackResponse response = new TrackResponse();
         ResultSet resultSet = null;
         try{
             Connection connection = request.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT T.* FROM TRACK_IN_PLAYLIST TP INNER JOIN TRACK T ON TP.T_ID = T.T_ID WHERE P_ID = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT T.*, T_OFFLINEAVAILABLE FROM TRACK_IN_PLAYLIST TP INNER JOIN TRACK T ON TP.T_ID = T.T_ID WHERE P_ID = ?");
             preparedStatement.setInt(1,playlistID);
             resultSet = preparedStatement.executeQuery();
 
@@ -132,7 +133,7 @@ public class PlaylistDAO {
             st.setString(2,getUser);
             st.setString(3,playlistName);
 
-            st.executeQuery();
+            st.execute();
         }
         catch(SQLException e){
             System.out.println("addPlaylist" + e);
@@ -150,7 +151,7 @@ public class PlaylistDAO {
             st.setInt(2,playListID);
             st.setString(3,userName);
 
-            st.executeQuery();
+            st.execute();
         }
         catch(SQLException e){
             System.out.println("updatePlaylist fault" + e);
@@ -164,7 +165,7 @@ public class PlaylistDAO {
 
             st.setInt(1,playlistID);
 
-            st.executeQuery();
+            st.execute();
         }
         catch(SQLException e){
             System.out.println("deletePlaylist fault" + e);
@@ -179,7 +180,7 @@ public class PlaylistDAO {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT max(P_ID) as maxID FROM PLAYLIST");
             set = preparedStatement.executeQuery();
 
-            while(set.next()){
+            if(set.next()){
                 maxPlaylistID += set.getInt("maxID");
             }
         }
@@ -188,6 +189,38 @@ public class PlaylistDAO {
         }
         return maxPlaylistID;
     }
+
+    public void removeTrackOfPlaylist(int playlistID, int trackID){
+        try{
+            Connection connection = request.getConnection();
+            PreparedStatement st = connection.prepareStatement("DELETE FROM TRACK_IN_PLAYLIST WHERE P_ID = ? AND T_ID = ?");
+
+            st.setInt(1,playlistID);
+            st.setInt(2,trackID);
+
+            st.execute();
+        }
+        catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void addTrackToPlaylist(int playlistID, int trackID, boolean offlineAvailable){
+        try{
+            Connection connection = request.getConnection();
+            PreparedStatement st = connection.prepareStatement("INSERT INTO TRACK_IN_PLAYLIST VALUES (?,?,?)");
+
+            st.setInt(1,playlistID);
+            st.setInt(2,trackID);
+            st.setBoolean(3,offlineAvailable);
+
+            st.execute();
+        }
+        catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 

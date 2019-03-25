@@ -1,10 +1,8 @@
 package com.spotitube.controller.login;
 
 import com.spotitube.dao.login.LoginDAO;
-import com.spotitube.dao.token.TokenDAO;
 import com.spotitube.dto.LoginRequest;
 import com.spotitube.dto.LoginResponse;
-import com.spotitube.entities.Token;
 import com.spotitube.models.UserModel;
 
 import javax.inject.Inject;
@@ -13,7 +11,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-
 
 @Path("/login")
 public class LoginController {

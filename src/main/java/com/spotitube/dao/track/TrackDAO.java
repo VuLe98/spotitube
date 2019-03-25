@@ -1,7 +1,6 @@
 package com.spotitube.dao.track;
 
 import com.spotitube.dao.login.LoginDAO;
-import com.spotitube.dao.token.TokenDAO;
 import com.spotitube.entities.Track;
 import com.spotitube.database.ConnectionFactory;
 import com.spotitube.dto.TrackResponse;
@@ -17,15 +16,12 @@ public class TrackDAO {
     @Inject
     private ConnectionFactory request;
 
-    @Inject
-    private LoginDAO lDAO;
-
     public TrackResponse getAvailableTracksOfPlaylist(int playlistID){
         TrackResponse response = new TrackResponse();
         ResultSet resultSet = null;
         try{
             Connection connection = request.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM TRACK WHERE T_ID not in (SELECT T_ID FROM TRACK_IN_PLAYLIST WHERE P_ID = ?)  ");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT T.*, T_OFFLINEAVAILABLE FROM TRACK T INNER JOIN TRACK_IN_PLAYLIST TP ON T.T_ID = TP.T_ID WHERE T.T_ID not in (SELECT T_ID FROM TRACK_IN_PLAYLIST WHERE P_ID = ?)");
             preparedStatement.setInt(1,playlistID);
             resultSet = preparedStatement.executeQuery();
 
@@ -59,15 +55,6 @@ public class TrackDAO {
         return response;
     }
 
-//    public void addTrack(String token, int playlistID, boolean offlineAvailable, int trackID){
-//        try{
-//            Connection connection = request.getConnection();
-//            PreparedStatement st = connection.prepareStatement("INSERT INTO TRACK_IN_PLAYLIST VALUES (?,?)");
-//        }
-//        catch(SQLException e){
-//            System.out.println("addTrack error: " + e);
-//        }
-//    }
 
 
 }

@@ -37,6 +37,7 @@ public class LoginDAO {
 
             if(userResult.next()) {
                 model.setFullname(userResult.getString("U_NAME"));
+                tDao.deleteTokenForUser(username);
                 Token newToken = tDao.createTokenForUser(username);
                 model.setToken(newToken.getToken());
             }

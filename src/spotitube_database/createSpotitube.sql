@@ -1,9 +1,9 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2012                    */
-/* Created on:     21-3-2019 09:59:09                           */
+/* Created on:     25-3-2019 19:41:21                           */
 /*==============================================================*/
 
-USE Spotitube_Database;
+use Spotitube_Database
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
    where r.fkeyid = object_id('PLAYLIST') and o.name = 'FK_PLAYLIST_USER_MET__USER')
@@ -20,16 +20,16 @@ go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('TRACK_IN_PLAYLIST') and o.name = 'FK_TRACK_IN_TRACK_IN__PLAYLIST')
+   where r.fkeyid = object_id('TRACK_IN_PLAYLIST') and o.name = 'FK_TRACK_IN_PLAYLIST__PLAYLIST')
 alter table TRACK_IN_PLAYLIST
-   drop constraint FK_TRACK_IN_TRACK_IN__PLAYLIST
+   drop constraint FK_TRACK_IN_PLAYLIST__PLAYLIST
 go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('TRACK_IN_PLAYLIST') and o.name = 'FK_TRACK_IN_TRACK_IN__TRACK')
+   where r.fkeyid = object_id('TRACK_IN_PLAYLIST') and o.name = 'FK_TRACK_IN_TRACK_INF_TRACK')
 alter table TRACK_IN_PLAYLIST
-   drop constraint FK_TRACK_IN_TRACK_IN__TRACK
+   drop constraint FK_TRACK_IN_TRACK_INF_TRACK
 go
 
 if exists (select 1
@@ -293,7 +293,6 @@ go
 create table TOKEN (
    U_NAME               USERNAME             not null,
    U_TOKEN              TOKEN                not null,
-   EXPIRY_DATE          EXPIRY_DATE          null,
    constraint PK_TOKEN primary key nonclustered (U_NAME, U_TOKEN)
 )
 go
@@ -318,7 +317,6 @@ create table TRACK (
    T_PLAYCOUNT          PLAYCOUNT            null,
    T_PUBLICATIONDATE    PUBLICATION_DATE     null,
    T_DESCRIPTION        DESCRIPTION          null,
-   T_OFFLINEAVAILABLE   O_AVAILABLE          not null,
    constraint PK_TRACK primary key nonclustered (T_ID)
 )
 go
@@ -329,6 +327,7 @@ go
 create table TRACK_IN_PLAYLIST (
    P_ID                 ID                   not null,
    T_ID                 ID                   not null,
+   T_OFFLINEAVAILABLE   O_AVAILABLE          not null,
    constraint PK_TRACK_IN_PLAYLIST primary key (P_ID, T_ID)
 )
 go
@@ -371,12 +370,12 @@ alter table TOKEN
 go
 
 alter table TRACK_IN_PLAYLIST
-   add constraint FK_TRACK_IN_TRACK_IN__PLAYLIST foreign key (P_ID)
+   add constraint FK_TRACK_IN_PLAYLIST__PLAYLIST foreign key (P_ID)
       references PLAYLIST (P_ID)
 go
 
 alter table TRACK_IN_PLAYLIST
-   add constraint FK_TRACK_IN_TRACK_IN__TRACK foreign key (T_ID)
+   add constraint FK_TRACK_IN_TRACK_INF_TRACK foreign key (T_ID)
       references TRACK (T_ID)
 go
 

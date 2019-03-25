@@ -18,7 +18,6 @@ public class ConnectionFactory {
         }
     }
 
-
     public Connection getConnection() {
         if (properties == null) {
             properties = readProperties();
