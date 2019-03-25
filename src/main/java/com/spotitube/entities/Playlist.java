@@ -1,4 +1,4 @@
-package com.spotitube;
+package com.spotitube.entities;
 
 import java.util.ArrayList;
 

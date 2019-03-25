@@ -1,5 +1,5 @@
 package com.spotitube.dto;
-import com.spotitube.Track;
+import com.spotitube.entities.Track;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
-package com.spotitube.controller;
+package com.spotitube.controller.playlist;
 
-import com.spotitube.Playlist;
-import com.spotitube.helpers.PlaylistHelper;
+import com.spotitube.entities.Playlist;
+import com.spotitube.services.playlist.PlaylistService;
 
 import javax.inject.Inject;
 import javax.naming.AuthenticationException;
@@ -12,8 +12,7 @@ import javax.ws.rs.core.Response;
 public class PlaylistController {
 
     @Inject
-    private PlaylistHelper helper;
-
+    private PlaylistService helper;
 
     @GET
     @Produces("application/json")

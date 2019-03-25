@@ -1,16 +1,16 @@
-package com.spotitube.helpers;
+package com.spotitube.services.playlist;
 
-import com.spotitube.Playlist;
-import com.spotitube.Token;
-import com.spotitube.dao.PlaylistDAO;
-import com.spotitube.dao.TokenDAO;
+import com.spotitube.dao.playlist.PlaylistDAO;
+import com.spotitube.dao.token.TokenDAO;
 import com.spotitube.dto.PlaylistResponse;
 import com.spotitube.dto.TrackResponse;
+import com.spotitube.entities.Playlist;
+import com.spotitube.entities.Token;
 
 import javax.inject.Inject;
 import javax.naming.AuthenticationException;
 
-public class PlaylistHelperImplementation implements PlaylistHelper {
+public class PlaylistServiceImpl implements PlaylistService{
 
     @Inject
     private PlaylistDAO pDAO;

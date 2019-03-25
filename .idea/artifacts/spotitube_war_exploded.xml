@@ -14,7 +14,6 @@
           <element id="module-output" name="spotitube" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: com.airhacks:jaxrs-cors:0.0.1" />
           <element id="library" level="project" name="Maven: com.microsoft.sqlserver:mssql-jdbc:7.2.1.jre11" />
           <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-common:2.28" />
           <element id="library" level="project" name="Maven: jakarta.ws.rs:jakarta.ws.rs-api:2.1.5" />

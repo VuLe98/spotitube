@@ -1,4 +1,4 @@
-package com.spotitube;
+package com.spotitube.entities;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -14,6 +14,8 @@ public class Track {
     private String publicationDate;
     private String description;
     private Boolean offlineAvailable;
+
+    public Track(){}
 
     public Track(int id, String title, String performer, int duration, String album, int playcount, String publicationDate, String description, Boolean offlineAvailable) {
         setId(id);

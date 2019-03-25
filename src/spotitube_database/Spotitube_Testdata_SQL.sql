@@ -9,8 +9,8 @@ INSERT INTO [USER] VALUES('Test', 'test123', 'Test User');
 
 /************************************************Create test token*******************************************************/
 
-INSERT INTO TOKEN VALUES('Vu','51246-kash-e7r','2019-03-22');
-INSERT INTO TOKEN VALUES('Test','32347-laim-2e','2019-03-23');
+INSERT INTO TOKEN VALUES('Vu','51246-kash-e7r','2019-03-24');
+INSERT INTO TOKEN VALUES('Test','32347-laim-2e','2019-03-24');
 
 /************************************************************************************************************************/
 

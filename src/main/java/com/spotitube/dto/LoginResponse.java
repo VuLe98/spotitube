@@ -5,7 +5,6 @@ public class LoginResponse {
     private String token;
     private String user;
 
-
     public String getUser() {
         return user;
     }

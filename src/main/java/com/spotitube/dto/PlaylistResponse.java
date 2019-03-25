@@ -1,6 +1,6 @@
 package com.spotitube.dto;
 
-import com.spotitube.Playlist;
+import com.spotitube.entities.Playlist;
 
 import java.util.ArrayList;
 import java.util.List;

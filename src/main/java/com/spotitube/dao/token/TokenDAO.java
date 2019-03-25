@@ -1,7 +1,7 @@
-package com.spotitube.dao;
+package com.spotitube.dao.token;
 
 import com.spotitube.entities.Token;
-import com.spotitube.database.DatabaseRequest;
+import com.spotitube.database.ConnectionFactory;
 
 import javax.inject.Inject;
 import java.sql.*;
@@ -16,13 +16,14 @@ import java.util.UUID;
 public class TokenDAO {
 
     @Inject
-    private DatabaseRequest request;
+    private ConnectionFactory request;
 
     public Token createTokenForUser(String username){
-        Token token;
+        var token = new Token();
+        ResultSet resultSet = null;
 
         try{
-            Connection connection = request.connectToDB();
+            Connection connection = request.getConnection();
             PreparedStatement st = connection.prepareStatement("INSERT INTO TOKEN VALUES (?,?,?)");
 
             //Verkrijg de verstrijkdatum (vandaag + 1)
@@ -37,10 +38,11 @@ public class TokenDAO {
             st.setString(1,username);
             st.setString(2,userToken);
             st.setTimestamp(3,stamp);
+            st.execute();
 
-            st.executeQuery();
+            token.setUser(username);
+            token.setToken(userToken);
 
-            token = new Token(username,userToken);
         }
         catch(SQLException e){
             throw new RuntimeException(e);
@@ -48,17 +50,12 @@ public class TokenDAO {
         return token;
     }
 
-    private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
-        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
-        return sDate;
-    }
-
     public boolean isTokenValid(Token token){
         boolean isValid = false;
         ResultSet resultSet = null;
 
         try{
-            Connection connection = request.connectToDB();
+            Connection connection = request.getConnection();
             PreparedStatement st = connection.prepareStatement("SELECT * FROM TOKEN WHERE U_NAME = ? AND U_TOKEN = ?");
             st.setString(1, token.getUser());
             st.setString(2,token.getToken());
@@ -87,7 +84,7 @@ public class TokenDAO {
         Token verkrijgToken = null;
         ResultSet resultSet = null;
         try{
-            Connection connection = request.connectToDB();
+            Connection connection = request.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM TOKEN WHERE U_TOKEN = ?");
             preparedStatement.setString(1,token);
             resultSet = preparedStatement.executeQuery();

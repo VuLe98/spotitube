@@ -1,4 +1,4 @@
-package com.spotitube;
+package com.spotitube.entities;
 
 public class User {
 
@@ -6,6 +6,7 @@ public class User {
     private String password;
     private String token;
 
+//    public User(){}
 
     public String getUsername() {
         return username;

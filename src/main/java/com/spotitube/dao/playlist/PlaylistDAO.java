@@ -1,8 +1,9 @@
-package com.spotitube.dao;
+package com.spotitube.dao.playlist;
 
-import com.spotitube.Playlist;
-import com.spotitube.Track;
-import com.spotitube.database.DatabaseRequest;
+import com.spotitube.dao.login.LoginDAO;
+import com.spotitube.entities.Playlist;
+import com.spotitube.entities.Track;
+import com.spotitube.database.ConnectionFactory;
 import com.spotitube.dto.PlaylistResponse;
 import com.spotitube.dto.TrackResponse;
 
@@ -19,7 +20,7 @@ import java.util.Date;
 public class PlaylistDAO {
 
     @Inject
-    private DatabaseRequest request;
+    private ConnectionFactory request;
 
     @Inject
     private LoginDAO dao;
@@ -30,7 +31,7 @@ public class PlaylistDAO {
         int playlistLength = 0;
 
         try{
-            Connection connection = request.connectToDB();
+            Connection connection = request.getConnection();
             PreparedStatement preparestatement = connection.prepareStatement("SELECT DISTINCT P.U_NAME, P_ID, P_NAME FROM PLAYLIST P INNER JOIN [USER] U ON P.U_NAME = U.U_NAME INNER JOIN [TOKEN] T ON U.U_NAME = T.U_NAME WHERE T.U_TOKEN = ?");
             preparestatement.setString(1,token);
             ResultSet resultSet = preparestatement.executeQuery();
@@ -64,7 +65,7 @@ public class PlaylistDAO {
         int playlistlength = 0;
 
         try(
-           Connection connection = request.connectToDB();
+           Connection connection = request.getConnection();
            PreparedStatement preparestatement = connection.prepareStatement("SELECT SUM(T_DURATION) AS playlist_length FROM TRACK_IN_PLAYLIST INNER JOIN TRACK ON TRACK_IN_PLAYLIST.T_ID = TRACK.T_ID WHERE P_ID = ?")
         ){
             preparestatement.setInt(1,playlistID);
@@ -84,7 +85,7 @@ public class PlaylistDAO {
         TrackResponse response = new TrackResponse();
         ResultSet resultSet = null;
         try{
-            Connection connection = request.connectToDB();
+            Connection connection = request.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT T.* FROM TRACK_IN_PLAYLIST TP INNER JOIN TRACK T ON TP.T_ID = T.T_ID WHERE P_ID = ?");
             preparedStatement.setInt(1,playlistID);
             resultSet = preparedStatement.executeQuery();
@@ -121,7 +122,7 @@ public class PlaylistDAO {
 
     public void addPlaylist(String token, String playlistName){
         try{
-            Connection connection = request.connectToDB();
+            Connection connection = request.getConnection();
             PreparedStatement st = connection.prepareStatement("INSERT INTO PLAYLIST VALUES (?,?,?)");
 
             int newID = getMaxIDPlaylist() + 1;
@@ -140,7 +141,7 @@ public class PlaylistDAO {
 
     public void updatePlaylist(String token, String newPlaylistName, int playListID){
         try{
-            Connection connection = request.connectToDB();
+            Connection connection = request.getConnection();
             PreparedStatement st = connection.prepareStatement("UPDATE PLAYLIST SET P_NAME = ? WHERE P_ID = ? AND U_NAME = ?");
 
             String userName = dao.getUserByToken(token);
@@ -158,7 +159,7 @@ public class PlaylistDAO {
 
     public void deletePlaylist(int playlistID){
         try{
-            Connection connection = request.connectToDB();
+            Connection connection = request.getConnection();
             PreparedStatement st = connection.prepareStatement("DELETE FROM PLAYLIST WHERE P_ID = ?");
 
             st.setInt(1,playlistID);
@@ -174,7 +175,7 @@ public class PlaylistDAO {
         ResultSet set = null;
         int maxPlaylistID = 0;
         try{
-            Connection connection = request.connectToDB();
+            Connection connection = request.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT max(P_ID) as maxID FROM PLAYLIST");
             set = preparedStatement.executeQuery();
 

@@ -1,11 +1,13 @@
-package com.spotitube;
-
-import java.time.LocalDateTime;
+package com.spotitube.entities;
 
 public class Token {
 
     private String user;
     private String token;
+
+    public Token(){
+
+    }
 
     public Token(String user, String token){
         setUser(user);
