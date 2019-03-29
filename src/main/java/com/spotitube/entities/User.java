@@ -2,16 +2,22 @@ package com.spotitube.entities;
 
 public class User {
 
-    private String username;
+    private String user;
     private String password;
-    private String token;
 
-    public String getUsername() {
-        return username;
+    public User(){}
+
+    public User(String user, String password){
+        this.user = user;
+        this.password = password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String username) {
+        this.user = username;
     }
 
 
@@ -21,13 +27,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

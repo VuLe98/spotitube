@@ -18,11 +18,11 @@ public class LoginServiceImpl implements LoginService{
 
     @Override
     public Token login(User user) throws LoginException {
-        User gebruiker = loginDAO.getUser(user.getUsername(),user.getPassword());
+        User gebruiker = loginDAO.getUser(user.getUser(),user.getPassword());
         if (gebruiker != null && gebruiker.getPassword().equals(user.getPassword())){
-            return tokenDAO.createTokenForUser(gebruiker.getUsername());
+            return tokenDAO.createTokenForUser(gebruiker.getUser());
         } else{
-            throw new LoginException();
+            throw new LoginException("Incorrect login");
         }
     }
 

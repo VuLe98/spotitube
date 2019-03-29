@@ -21,7 +21,7 @@ public class TrackDAO {
         ResultSet resultSet = null;
         try{
             Connection connection = request.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT T.*, T_OFFLINEAVAILABLE FROM TRACK T INNER JOIN TRACK_IN_PLAYLIST TP ON T.T_ID = TP.T_ID WHERE T.T_ID not in (SELECT T_ID FROM TRACK_IN_PLAYLIST WHERE P_ID = ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT DISTINCT T.*, T_OFFLINEAVAILABLE FROM TRACK T INNER JOIN TRACK_IN_PLAYLIST TP ON T.T_ID = TP.T_ID WHERE T.T_ID not in (SELECT T_ID FROM TRACK_IN_PLAYLIST WHERE P_ID = ?)");
             preparedStatement.setInt(1,playlistID);
             resultSet = preparedStatement.executeQuery();
 

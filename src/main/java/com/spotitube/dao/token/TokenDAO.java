@@ -50,7 +50,7 @@ public class TokenDAO {
 
     public Token getToken(String token){
         Token verkrijgToken = null;
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         try{
             Connection connection = request.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM TOKEN WHERE U_TOKEN = ?");
@@ -64,7 +64,7 @@ public class TokenDAO {
             }
         }
         catch(SQLException e){
-            System.out.println("Error" + e);
+            System.out.println("getToken error: " + e);
         }
         return verkrijgToken;
     }

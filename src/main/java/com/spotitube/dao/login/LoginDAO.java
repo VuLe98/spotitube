@@ -43,7 +43,7 @@ public class LoginDAO {
             }
         }
         catch(SQLException e){
-            System.out.println("Geen gebruiker gevonden" + e);
+            System.out.println("login error" + e);
         }
         return model;
     }
@@ -62,13 +62,13 @@ public class LoginDAO {
                 String dbPassword = userResult.getString("U_PASSWORD");
 
                 if(password.equals(dbPassword) && username.equals(dbUser)){
-                    user.setUsername(dbUser);
+                    user.setUser(dbUser);
                     user.setPassword(dbPassword);
                 }
             }
         }
         catch(SQLException e){
-            System.out.println("Geen gebruiker gevonden" + e);
+            System.out.println("getUser error" + e);
         }
         return user;
     }
@@ -88,7 +88,7 @@ public class LoginDAO {
             }
         }
         catch(SQLException e){
-            System.out.println("Error" + e);
+            System.out.println("getUserByToken error" + e);
         }
         return userName;
     }

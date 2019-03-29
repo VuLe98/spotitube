@@ -56,7 +56,7 @@ public class PlaylistDAO {
             }
             response.setLength(playlistLength);
         } catch(SQLException e){
-            throw new RuntimeException();
+            System.out.println("getAllPlaylists error: " + e);
         }
         return response;
     }
@@ -76,7 +76,7 @@ public class PlaylistDAO {
             }
 
         } catch(SQLException e){
-            throw new RuntimeException(e);
+            System.out.println("getLengthOfPlaylist error: " + e);
         }
         return playlistlength;
     }
@@ -84,7 +84,7 @@ public class PlaylistDAO {
 
     public TrackResponse getContentOfPlaylist(int playlistID){
         TrackResponse response = new TrackResponse();
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         try{
             Connection connection = request.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT T.*, T_OFFLINEAVAILABLE FROM TRACK_IN_PLAYLIST TP INNER JOIN TRACK T ON TP.T_ID = T.T_ID WHERE P_ID = ?");
@@ -113,10 +113,10 @@ public class PlaylistDAO {
             }
         }
         catch(SQLException e){
-            System.out.println("getContentOfPlaylist fault" + e);
+            System.out.println("getContentOfPlaylist SQL fault: " + e);
         }
         catch(ParseException i){
-            System.out.println("getContentOfPlaylist parse fault" + i);
+            System.out.println("getContentOfPlaylist parse fault: " + i);
         }
         return response;
     }
@@ -136,7 +136,7 @@ public class PlaylistDAO {
             st.execute();
         }
         catch(SQLException e){
-            System.out.println("addPlaylist" + e);
+            System.out.println("addPlaylist fault: " + e);
         }
     }
 
@@ -154,7 +154,7 @@ public class PlaylistDAO {
             st.execute();
         }
         catch(SQLException e){
-            System.out.println("updatePlaylist fault" + e);
+            System.out.println("updatePlaylist fault: " + e);
         }
     }
 
@@ -168,12 +168,12 @@ public class PlaylistDAO {
             st.execute();
         }
         catch(SQLException e){
-            System.out.println("deletePlaylist fault" + e);
+            System.out.println("deletePlaylist fault: " + e);
         }
     }
 
     private int getMaxIDPlaylist(){
-        ResultSet set = null;
+        ResultSet set;
         int maxPlaylistID = 0;
         try{
             Connection connection = request.getConnection();
@@ -185,7 +185,7 @@ public class PlaylistDAO {
             }
         }
         catch(SQLException e){
-            System.out.println("getMaxID fault" + e);
+            System.out.println("getMaxID fault: " + e);
         }
         return maxPlaylistID;
     }
@@ -201,7 +201,7 @@ public class PlaylistDAO {
             st.execute();
         }
         catch(SQLException e){
-            throw new RuntimeException(e);
+            System.out.println("removeTrackOfPlaylist error" + e);
         }
     }
 
@@ -217,7 +217,7 @@ public class PlaylistDAO {
             st.execute();
         }
         catch(SQLException e){
-            throw new RuntimeException(e);
+            System.out.println("addTrackToPlaylist error" + e);
         }
     }
 

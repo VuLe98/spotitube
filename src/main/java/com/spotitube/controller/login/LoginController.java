@@ -3,7 +3,10 @@ package com.spotitube.controller.login;
 import com.spotitube.dao.login.LoginDAO;
 import com.spotitube.dto.LoginRequest;
 import com.spotitube.dto.LoginResponse;
-import com.spotitube.models.UserModel;
+import com.spotitube.entities.Token;
+import com.spotitube.entities.User;
+import com.spotitube.exceptions.LoginException;
+import com.spotitube.services.login.LoginService;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -15,29 +18,35 @@ import javax.ws.rs.core.Response;
 @Path("/login")
 public class LoginController {
 
+    private LoginService service;
     private LoginDAO loginDAO;
 
     @POST
     @Consumes("application/json")
     @Produces("application/json")
     public Response login(LoginRequest request) {
-        UserModel login = loginDAO.login(request.getUser(), request.getPassword());
+        User loginUser = new User(request.getUser(),request.getPassword());
 
-        if (login.getToken() == null) {
-            return Response.status(403).build();
+        if(request.getUser() == null || request.getUser().isEmpty()||
+                request.getPassword() == null || request.getPassword().isEmpty()){
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
-        LoginResponse response = new LoginResponse();
-
-        response.setToken(login.getToken());
-        response.setUser(login.getFullname());
-
-        return Response.ok().entity(response).build();
+        try {
+            return Response.ok().entity(service.login(loginUser)).build();
+        }
+        catch(LoginException e){
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
     }
 
+    @Inject
+    public void setLoginService(LoginService loginService){
+        this.service = loginService;
+    }
 
     @Inject
-    public void setLoginDAO(LoginDAO loginDAO) {
+    public void setLoginDAO(LoginDAO loginDAO){
         this.loginDAO = loginDAO;
     }
 }

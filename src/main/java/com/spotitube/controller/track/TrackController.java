@@ -11,13 +11,13 @@ import javax.ws.rs.core.Response;
 public class TrackController {
 
     @Inject
-    private TrackService service;
+    private TrackService tService;
 
     @GET
     @Produces("application/json")
     public Response getTracksOfPlaylist(@QueryParam("token") String token, @QueryParam("forPlaylist") int playlistID){
         try {
-            return Response.ok().entity(service.getAvailableTracksForPlaylist(token, playlistID)).build();
+            return Response.ok().entity(tService.getAvailableTracksForPlaylist(token, playlistID)).build();
         }
         catch(AuthenticationException e){
             return Response.status(Response.Status.FORBIDDEN).build();
