@@ -148,7 +148,7 @@ public class PlaylistServiceImplTest {
             return origin;
         }).when(pDAOMock).updatePlaylist(request.getName(),testPlaylistNo);
 
-        pServiceImpl.updatePlaylist(testToken,request);
+        pServiceImpl.updatePlaylist(testToken,testPlaylistNo,request);
 
         assertEquals(updated.getName(),origin.getName());
     }
@@ -172,7 +172,7 @@ public class PlaylistServiceImplTest {
             return origin;
         }).when(pDAOMock).updatePlaylist(request.getName(),testPlaylistNo);
 
-        Response response = pServiceImpl.updatePlaylist("",request);
+        Response response = pServiceImpl.updatePlaylist("",testPlaylistNo,request);
 
         assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
     }

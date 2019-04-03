@@ -66,13 +66,12 @@ public class PlaylistServiceImpl implements PlaylistService{
     }
 
     @Override
-    public Response updatePlaylist(String token, PlaylistModel list){
+    public Response updatePlaylist(String token, int playlistID, PlaylistModel list){
         String doesUserExist = tDAO.getUserByToken(token);
         try {
             if (doesUserExist != null) {
                 String getNewName = list.getName();
-                int getID = list.getId();
-                pDAO.updatePlaylist(getNewName, getID);
+                pDAO.updatePlaylist(getNewName, playlistID);
                 return getAllPlaylists(token);
             } else {
                 throw new AuthenticationException();

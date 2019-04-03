@@ -44,7 +44,7 @@ public class PlaylistController {
     @PUT
     @Consumes("application/json")
     public Response updatePlaylist(@QueryParam("token") String token, @PathParam("id") int id, PlaylistModel list){
-        return pService.updatePlaylist(token,list);
+        return pService.updatePlaylist(token,id,list);
 
     }
 
