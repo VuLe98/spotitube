@@ -1,17 +1,17 @@
 package com.spotitube.dto;
 
-import com.spotitube.entities.Playlist;
+import com.spotitube.models.PlaylistModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistResponse {
 
-    private List<Playlist> playlists = new ArrayList<>();
+    private List<PlaylistModel> playlist = new ArrayList<>();
     private int length;
 
-    public void addPlaylists(Playlist list){
-        playlists.add(list);
+    public void addPlaylists(PlaylistModel list){
+        playlist.add(list);
     }
     public void setLength(int length) {
         this.length = length;
@@ -21,7 +21,7 @@ public class PlaylistResponse {
         return length;
     }
 
-    public List<Playlist> getPlaylists(){
-        return playlists;
+    public List<PlaylistModel> getPlaylists(){
+        return playlist;
     }
 }

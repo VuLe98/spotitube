@@ -1,5 +1,6 @@
 package com.spotitube.dto;
-import com.spotitube.entities.Track;
+
+import com.spotitube.models.TrackModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +8,13 @@ import java.util.List;
 
 public class TrackResponse {
 
-    private List<Track> tracks = new ArrayList<>();
+    private List<TrackModel> tracks = new ArrayList<>();
 
-    public List<Track> getTracks() {
+    public List<TrackModel> getTracks() {
         return tracks;
     }
 
-    public void setTracks(List<Track> tracks) {
+    public void setTracks(List<TrackModel> tracks) {
         this.tracks = tracks;
     }
 }
