@@ -1,6 +1,6 @@
 package com.spotitube;
 
-import com.spotitube.controller.playlist.PlaylistController;
+import com.spotitube.controller.PlaylistController;
 import com.spotitube.services.playlist.PlaylistServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

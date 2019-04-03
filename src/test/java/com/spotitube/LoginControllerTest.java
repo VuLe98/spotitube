@@ -1,6 +1,6 @@
 package com.spotitube;
 
-import com.spotitube.controller.login.LoginController;
+import com.spotitube.controller.LoginController;
 import com.spotitube.dto.LoginRequest;
 import com.spotitube.services.login.LoginServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

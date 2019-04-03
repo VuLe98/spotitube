@@ -1,7 +1,7 @@
 package com.spotitube.services.track;
 
-import com.spotitube.dao.token.TokenDAO;
-import com.spotitube.dao.track.TrackDAO;
+import com.spotitube.dao.TokenDAO;
+import com.spotitube.dao.TrackDAO;
 import com.spotitube.dto.TrackResponse;
 
 import javax.inject.Inject;

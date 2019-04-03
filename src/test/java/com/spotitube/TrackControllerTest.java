@@ -1,6 +1,6 @@
 package com.spotitube;
 
-import com.spotitube.controller.track.TrackController;
+import com.spotitube.controller.TrackController;
 import com.spotitube.services.track.TrackService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

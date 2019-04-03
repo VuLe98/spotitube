@@ -1,8 +1,8 @@
 package com.spotitube;
 
-import com.spotitube.controller.login.LoginController;
-import com.spotitube.dao.login.LoginDAO;
-import com.spotitube.dao.token.TokenDAO;
+import com.spotitube.controller.LoginController;
+import com.spotitube.dao.LoginDAO;
+import com.spotitube.dao.TokenDAO;
 import com.spotitube.dto.LoginRequest;
 import com.spotitube.models.UserModel;
 import com.spotitube.services.login.LoginServiceImpl;

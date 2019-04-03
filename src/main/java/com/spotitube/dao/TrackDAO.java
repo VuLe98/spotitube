@@ -1,4 +1,4 @@
-package com.spotitube.dao.track;
+package com.spotitube.dao;
 
 import com.spotitube.models.TrackModel;
 import com.spotitube.dao.ConnectionFactory;

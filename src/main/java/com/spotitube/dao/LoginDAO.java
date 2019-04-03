@@ -1,4 +1,4 @@
-package com.spotitube.dao.login;
+package com.spotitube.dao;
 
 import com.spotitube.dao.ConnectionFactory;
 import com.spotitube.models.UserModel;

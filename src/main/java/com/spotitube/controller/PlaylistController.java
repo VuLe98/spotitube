@@ -1,4 +1,4 @@
-package com.spotitube.controller.playlist;
+package com.spotitube.controller;
 
 import com.spotitube.models.PlaylistModel;
 import com.spotitube.models.TrackModel;

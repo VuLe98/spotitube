@@ -1,7 +1,7 @@
 package com.spotitube.services.login;
 
-import com.spotitube.dao.login.LoginDAO;
-import com.spotitube.dao.token.TokenDAO;
+import com.spotitube.dao.LoginDAO;
+import com.spotitube.dao.TokenDAO;
 import com.spotitube.models.UserModel;
 
 import javax.inject.Inject;

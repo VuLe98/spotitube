@@ -1,4 +1,4 @@
-package com.spotitube.controller.login;
+package com.spotitube.controller;
 
 import com.spotitube.dto.LoginRequest;
 import com.spotitube.services.login.LoginService;

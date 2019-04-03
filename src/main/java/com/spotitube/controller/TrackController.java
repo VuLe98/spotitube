@@ -1,4 +1,4 @@
-package com.spotitube.controller.track;
+package com.spotitube.controller;
 
 import com.spotitube.services.track.TrackService;
 

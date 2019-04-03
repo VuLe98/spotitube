@@ -1,7 +1,7 @@
 package com.spotitube.services.playlist;
 
-import com.spotitube.dao.playlist.PlaylistDAO;
-import com.spotitube.dao.token.TokenDAO;
+import com.spotitube.dao.PlaylistDAO;
+import com.spotitube.dao.TokenDAO;
 import com.spotitube.dto.PlaylistResponse;
 import com.spotitube.dto.TrackResponse;
 import com.spotitube.models.PlaylistModel;
