@@ -2,29 +2,44 @@ package com.spotitube.services.login;
 
 import com.spotitube.dao.login.LoginDAO;
 import com.spotitube.dao.token.TokenDAO;
-import com.spotitube.entities.Token;
-import com.spotitube.entities.User;
-import com.spotitube.exceptions.LoginException;
+import com.spotitube.models.UserModel;
 
 import javax.inject.Inject;
+import javax.naming.AuthenticationException;
+import javax.ws.rs.core.Response;
 
 public class LoginServiceImpl implements LoginService{
 
-    @Inject
     private LoginDAO loginDAO;
-
-    @Inject
     private TokenDAO tokenDAO;
 
     @Override
-    public Token login(User user) throws LoginException {
-        User gebruiker = loginDAO.getUser(user.getUser(),user.getPassword());
-        if (gebruiker != null && gebruiker.getPassword().equals(user.getPassword())){
-            return tokenDAO.createTokenForUser(gebruiker.getUser());
-        } else{
-            throw new LoginException("Incorrect login");
+    public Response login(String username, String password){
+        UserModel user = loginDAO.login(username,password);
+        try {
+            if (user.getUser() != null) {
+                if (user.getToken() != null) {
+                    return Response.ok().entity(tokenDAO.updateTokenForUser(username)).build();
+                } else {
+                    return Response.ok().entity(tokenDAO.createTokenForUser(username)).build();
+                }
+            } else {
+                throw new AuthenticationException();
+            }
+        }
+        catch(AuthenticationException e){
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 
+    @Inject
+    public void setLoginDAO(LoginDAO dao){
+        this.loginDAO = dao;
+    }
+
+    @Inject
+    public void setTokenDAO(TokenDAO dao){
+        this.tokenDAO = dao;
+    }
 
 }

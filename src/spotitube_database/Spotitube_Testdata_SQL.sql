@@ -9,12 +9,15 @@ INSERT INTO [USER] VALUES('Test', 'test123', 'Test User');
 
 /************************************************Create test tracks******************************************************/
 
-INSERT INTO TRACK (T_ID,T_TITLE,T_PERFORMER,T_DURATION,T_ALBUM) 
-		VALUES (1, 'Song for someone', 'The Frames', 350, 'The cost');
-INSERT INTO TRACK (T_ID,T_TITLE,T_PERFORMER,T_DURATION,T_PLAYCOUNT,T_PUBLICATIONDATE,T_DESCRIPTION) 
-		VALUES (2, 'The cost', 'The Frames', 423, 37, '2005-01-10','Title song from the Album The Cost');
-INSERT INTO TRACK (T_ID,T_TITLE,T_PERFORMER,T_DURATION,T_PUBLICATIONDATE) 
-		VALUES (3, 'California Gurls', 'Katy Perry', 234, '2010-06-14');
+INSERT INTO TRACK (T_ID,T_TITLE,T_PERFORMER,T_DURATION) 
+		VALUES (1, 'Song for someone', 'The Frames', 350);
+INSERT INTO SONG VALUES (1,'The cost');
+INSERT INTO TRACK (T_ID,T_TITLE,T_PERFORMER,T_DURATION,T_PLAYCOUNT) 
+		VALUES (2, 'The cost', 'The Frames', 423, 37);
+INSERT INTO VIDEO VALUES (2,'2005-01-10','Title song from the Album The Cost')
+INSERT INTO TRACK (T_ID,T_TITLE,T_PERFORMER,T_DURATION) 
+		VALUES (3, 'California Gurls', 'Katy Perry', 234);
+INSERT INTO SONG VALUES(3,'Teenage Dream');
 
 /************************************************************************************************************************/
 

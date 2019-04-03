@@ -1,7 +1,7 @@
 package com.spotitube.dao.token;
 
-import com.spotitube.entities.Token;
-import com.spotitube.database.ConnectionFactory;
+import com.spotitube.dao.ConnectionFactory;
+import com.spotitube.models.UserModel;
 
 import javax.inject.Inject;
 import java.sql.*;
@@ -10,13 +10,13 @@ import java.util.UUID;
 public class TokenDAO {
 
     @Inject
-    private ConnectionFactory request;
+    private ConnectionFactory factory;
 
-    public Token createTokenForUser(String username){
-        var token = new Token();
+    public UserModel createTokenForUser(String username){
+        var user = new UserModel();
 
         try{
-            Connection connection = request.getConnection();
+            Connection connection = factory.getConnection();
             PreparedStatement st = connection.prepareStatement("INSERT INTO TOKEN VALUES (?,?)");
 
             String userToken = UUID.randomUUID().toString();
@@ -25,47 +25,55 @@ public class TokenDAO {
             st.setString(2,userToken);
             st.execute();
 
-            token.setUser(username);
-            token.setToken(userToken);
+            user.setUser(username);
+            user.setToken(userToken);
 
         }
         catch(SQLException e){
             throw new RuntimeException(e);
         }
-        return token;
+        return user;
     }
 
-    public void deleteTokenForUser(String username){
-        try{
-            Connection connection = request.getConnection();
-            PreparedStatement st = connection.prepareStatement("DELETE FROM TOKEN WHERE U_NAME = ?");
+    public UserModel updateTokenForUser(String username){
+        var user = new UserModel();
 
-            st.setString(1,username);
+        try{
+            Connection connection = factory.getConnection();
+            PreparedStatement st = connection.prepareStatement("UPDATE TOKEN SET U_TOKEN = ? WHERE U_NAME = ?");
+
+            String userToken = UUID.randomUUID().toString();
+
+            st.setString(1,userToken);
+            st.setString(2,username);
             st.execute();
+
+            user.setUser(username);
+            user.setToken(userToken);
+
         }
         catch(SQLException e){
             throw new RuntimeException(e);
         }
+        return user;
     }
 
-    public Token getToken(String token){
-        Token verkrijgToken = null;
-        ResultSet resultSet;
+    public String getUserByToken(String token){
+        ResultSet userResult = null;
+        String userName = "";
         try{
-            Connection connection = request.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM TOKEN WHERE U_TOKEN = ?");
-            preparedStatement.setString(1,token);
-            resultSet = preparedStatement.executeQuery();
+            Connection connection = factory.getConnection();
+            PreparedStatement st = connection.prepareStatement("SELECT U_NAME FROM TOKEN WHERE U_TOKEN = ?");
+            st.setString(1,token);
+            userResult = st.executeQuery();
 
-            if(resultSet.next()){
-                String dbToken = resultSet.getString("U_TOKEN");
-                String user = resultSet.getString("U_NAME");
-                verkrijgToken = new Token(user,dbToken);
+            while(userResult.next()){
+                userName = userResult.getString("U_NAME");
             }
         }
         catch(SQLException e){
-            System.out.println("getToken error: " + e);
+            System.out.println("getUserByToken error" + e);
         }
-        return verkrijgToken;
+        return userName;
     }
 }

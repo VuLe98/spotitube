@@ -1,8 +1,7 @@
 package com.spotitube.dao.track;
 
-import com.spotitube.dao.login.LoginDAO;
-import com.spotitube.entities.Track;
-import com.spotitube.database.ConnectionFactory;
+import com.spotitube.models.TrackModel;
+import com.spotitube.dao.ConnectionFactory;
 import com.spotitube.dto.TrackResponse;
 
 import javax.inject.Inject;
@@ -21,7 +20,8 @@ public class TrackDAO {
         ResultSet resultSet = null;
         try{
             Connection connection = request.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT DISTINCT T.*, T_OFFLINEAVAILABLE FROM TRACK T INNER JOIN TRACK_IN_PLAYLIST TP ON T.T_ID = TP.T_ID WHERE T.T_ID not in (SELECT T_ID FROM TRACK_IN_PLAYLIST WHERE P_ID = ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT DISTINCT T.*,T_OFFLINEAVAILABLE,T_ALBUM, T_PUBLICATIONDATE, T_DESCRIPTION  FROM TRACK T LEFT JOIN TRACK_IN_PLAYLIST TP ON T.T_ID = TP.T_ID WHERE T.T_ID NOT IN (SELECT T_ID FROM TRACK_IN_PLAYLIST WHERE P_ID = ?)");
+
             preparedStatement.setInt(1,playlistID);
             resultSet = preparedStatement.executeQuery();
 
@@ -43,7 +43,7 @@ public class TrackDAO {
                 String trackDescription = resultSet.getString("T_DESCRIPTION");
                 boolean trackOfflineAvailable = resultSet.getBoolean("T_OFFLINEAVAILABLE");
 
-                response.getTracks().add(new Track(trackID,trackTitle,trackPerformer,trackDuration,trackAlbum,trackPlayCount,trackDate,trackDescription,trackOfflineAvailable));
+                response.getTracks().add(new TrackModel(trackID,trackTitle,trackPerformer,trackDuration,trackAlbum,trackPlayCount,trackDate,trackDescription,trackOfflineAvailable));
             }
         }
         catch(SQLException e){

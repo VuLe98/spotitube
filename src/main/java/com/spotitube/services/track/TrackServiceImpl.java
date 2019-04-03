@@ -3,26 +3,38 @@ package com.spotitube.services.track;
 import com.spotitube.dao.token.TokenDAO;
 import com.spotitube.dao.track.TrackDAO;
 import com.spotitube.dto.TrackResponse;
-import com.spotitube.entities.Token;
 
 import javax.inject.Inject;
 import javax.naming.AuthenticationException;
+import javax.ws.rs.core.Response;
 
 public class TrackServiceImpl implements TrackService{
 
-    @Inject
     private TrackDAO tDAO;
-
-    @Inject
     private TokenDAO tokenDAO;
 
-    public TrackResponse getAvailableTracksForPlaylist(String token, int playlistID) throws AuthenticationException{
-        Token userToken = tokenDAO.getToken(token);
-        if(userToken != null){
-            return tDAO.getAvailableTracksOfPlaylist(playlistID);
+    public Response getAvailableTracksForPlaylist(String token, int playlistID){
+        String doesUserExist = tokenDAO.getUserByToken(token);
+        try {
+            if (doesUserExist != null) {
+                TrackResponse response = tDAO.getAvailableTracksOfPlaylist(playlistID);
+                return Response.ok().entity(response).build();
+            } else {
+                throw new AuthenticationException();
+            }
         }
-        else{
-            throw new AuthenticationException("Incorrect token");
+        catch(AuthenticationException e){
+            return Response.status(Response.Status.FORBIDDEN).build();
         }
+    }
+
+    @Inject
+    public void setTrackDAO(TrackDAO dao){
+        this.tDAO = dao;
+    }
+
+    @Inject
+    public void setTokenDAO(TokenDAO dao){
+        this.tokenDAO = dao;
     }
 }

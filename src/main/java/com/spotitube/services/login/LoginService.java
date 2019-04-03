@@ -1,10 +1,7 @@
 package com.spotitube.services.login;
 
-import com.spotitube.entities.Token;
-import com.spotitube.entities.User;
-import com.spotitube.exceptions.LoginException;
-
+import javax.ws.rs.core.Response;
 
 public interface LoginService {
-    Token login(User user) throws LoginException;
+    Response login(String username, String password);
 }

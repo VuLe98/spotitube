@@ -1,10 +1,8 @@
 package com.spotitube;
 
 import com.spotitube.controller.login.LoginController;
-import com.spotitube.dao.login.LoginDAO;
 import com.spotitube.dto.LoginRequest;
-import com.spotitube.models.UserModel;
-import com.spotitube.services.login.LoginService;
+import com.spotitube.services.login.LoginServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,59 +17,26 @@ public class LoginControllerTest {
     private static final String PASSWORD = "1234";
 
     private LoginController controller;
-    private LoginDAO loginDAOMock;
-    private LoginService loginServiceMock;
+    private LoginServiceImpl loginServiceImplMock;
+    private LoginRequest validLogin;
 
     @BeforeEach
     void setup(){
         controller = new LoginController();
-        loginDAOMock = mock(LoginDAO.class);
-        loginServiceMock = mock(LoginService.class);
+        loginServiceImplMock = mock(LoginServiceImpl.class);
+        controller.setLoginService(loginServiceImplMock);
+        validLogin = new LoginRequest();
+        validLogin.setUser(USERNAME);
+        validLogin.setPassword(PASSWORD);
     }
 
     @Test
-    void testForValidUser() {
-        //Setup
-        UserModel userModel = new UserModel();
-        userModel.setFullname(USERNAME);
-        userModel.setToken("1234-EF");
+    void doesLoginControllerInteractWithService(){
+        when(loginServiceImplMock.login(validLogin.getUser(),validLogin.getPassword())).thenReturn(Response.ok().build());
 
-        controller.setLoginDAO(loginDAOMock);
-        controller.setLoginService(loginServiceMock);
-        when(loginDAOMock.login(USERNAME,PASSWORD)).thenReturn(userModel);
+        Response actual = controller.login(validLogin);
 
-        LoginRequest login = new LoginRequest();
-
-        login.setUser(USERNAME);
-        login.setPassword(PASSWORD);
-
-        //Test
-        Response loginResponse = controller.login(login);
-
-        assertEquals(200,loginResponse.getStatus());
+        assertEquals(200, actual.getStatus());
     }
-
-    @Test
-    void testForInvalidUser(){
-        //Setup
-        LoginRequest login = new LoginRequest();
-
-        login.setUser("");
-        login.setPassword("");
-
-        controller.setLoginDAO(loginDAOMock);
-        controller.setLoginService(loginServiceMock);
-
-        when(loginDAOMock.login("","")).thenReturn(new UserModel());
-
-        //Test
-        Response loginResponse = controller.login(login);
-
-        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(),loginResponse.getStatus());
-
-    }
-
-
-
 
 }

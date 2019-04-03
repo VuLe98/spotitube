@@ -1,9 +1,7 @@
 package com.spotitube.services.track;
 
-import com.spotitube.dto.TrackResponse;
-
-import javax.naming.AuthenticationException;
+import javax.ws.rs.core.Response;
 
 public interface TrackService {
-    TrackResponse getAvailableTracksForPlaylist(String token, int playlistID) throws AuthenticationException;
+    Response getAvailableTracksForPlaylist(String token, int playlistID);
 }

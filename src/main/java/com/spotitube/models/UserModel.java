@@ -1,15 +1,22 @@
 package com.spotitube.models;
 
 public class UserModel {
-    private String fullname;
+    private String user;
     private String token;
 
-    public String getFullname() {
-        return fullname;
+    public UserModel(){}
+
+    public UserModel(String user, String token){
+        setUser(user);
+        setToken(token);
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getToken() {

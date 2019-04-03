@@ -1,18 +1,18 @@
-package com.spotitube.entities;
+package com.spotitube.models;
 
 import java.util.ArrayList;
 
-public class Playlist {
+public class PlaylistModel {
 
     private Integer id;
     private String name;
     private boolean owner;
-    private ArrayList<Track> tracks;
+    private ArrayList<TrackModel> tracks;
 
-    public Playlist(){
+    public PlaylistModel(){
 
     }
-    public Playlist(Integer id, String name, boolean owner, ArrayList<Track> tracks){
+    public PlaylistModel(Integer id, String name, boolean owner, ArrayList<TrackModel> tracks){
         setId(id);
         setName(name);
         setOwner(owner);
@@ -43,11 +43,11 @@ public class Playlist {
         this.owner = owner;
     }
 
-    public ArrayList<Track> getTracks(){
+    public ArrayList<TrackModel> getTracks(){
         return tracks;
     }
 
-    public void setTracks(ArrayList<Track> tracks){
+    public void setTracks(ArrayList<TrackModel> tracks){
         this.tracks = tracks;
     }
 

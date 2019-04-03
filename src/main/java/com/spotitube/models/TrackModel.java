@@ -1,9 +1,6 @@
-package com.spotitube.entities;
+package com.spotitube.models;
 
-import java.time.LocalDate;
-import java.util.Date;
-
-public class Track {
+public class TrackModel {
 
     private int id;
     private String title;
@@ -15,9 +12,9 @@ public class Track {
     private String description;
     private Boolean offlineAvailable;
 
-    public Track(){}
+    public TrackModel(){ }
 
-    public Track(int id, String title, String performer, int duration, String album, int playcount, String publicationDate, String description, Boolean offlineAvailable) {
+    public TrackModel(int id, String title, String performer, int duration, String album, int playcount, String publicationDate, String description, boolean offlineAvailable){
         setId(id);
         setTitle(title);
         setPerformer(performer);

@@ -1,4 +1,4 @@
-package com.spotitube.database;
+package com.spotitube.dao;
 
 import java.io.IOException;
 import java.sql.Connection;

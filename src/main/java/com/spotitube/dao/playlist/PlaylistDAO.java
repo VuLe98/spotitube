@@ -1,9 +1,9 @@
 package com.spotitube.dao.playlist;
 
-import com.spotitube.dao.login.LoginDAO;
-import com.spotitube.entities.Playlist;
-import com.spotitube.entities.Track;
-import com.spotitube.database.ConnectionFactory;
+import com.spotitube.dao.token.TokenDAO;
+import com.spotitube.models.PlaylistModel;
+import com.spotitube.models.TrackModel;
+import com.spotitube.dao.ConnectionFactory;
 import com.spotitube.dto.PlaylistResponse;
 import com.spotitube.dto.TrackResponse;
 
@@ -23,7 +23,7 @@ public class PlaylistDAO {
     private ConnectionFactory request;
 
     @Inject
-    private LoginDAO dao;
+    private TokenDAO dao;
 
     public PlaylistResponse getAllPlaylists(String token){
 
@@ -37,7 +37,7 @@ public class PlaylistDAO {
             ResultSet resultSet = preparestatement.executeQuery();
 
             while (resultSet.next()) {
-                Playlist list = new Playlist();
+                PlaylistModel list = new PlaylistModel();
                 int playlistID = resultSet.getInt("P_ID");
                 String playlistName = resultSet.getString("P_NAME");
                 String playlistUser = resultSet.getString("U_NAME");
@@ -83,11 +83,11 @@ public class PlaylistDAO {
 
 
     public TrackResponse getContentOfPlaylist(int playlistID){
-        TrackResponse response = new TrackResponse();
+        var response = new TrackResponse();
         ResultSet resultSet;
         try{
             Connection connection = request.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT T.*, T_OFFLINEAVAILABLE FROM TRACK_IN_PLAYLIST TP INNER JOIN TRACK T ON TP.T_ID = T.T_ID WHERE P_ID = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT T.*, T_OFFLINEAVAILABLE, T_ALBUM, T_PUBLICATIONDATE, T_DESCRIPTION FROM TRACK_IN_PLAYLIST TP INNER JOIN TRACK T ON TP.T_ID = T.T_ID WHERE P_ID = ?");
             preparedStatement.setInt(1,playlistID);
             resultSet = preparedStatement.executeQuery();
 
@@ -109,7 +109,7 @@ public class PlaylistDAO {
                 String trackDescription = resultSet.getString("T_DESCRIPTION");
                 boolean trackOfflineAvailable = resultSet.getBoolean("T_OFFLINEAVAILABLE");
 
-                response.getTracks().add(new Track(trackID,trackTitle,trackPerformer,trackDuration,trackAlbum,trackPlayCount,trackDate,trackDescription,trackOfflineAvailable));
+                response.getTracks().add(new TrackModel(trackID,trackTitle,trackPerformer,trackDuration,trackAlbum,trackPlayCount,trackDate,trackDescription,trackOfflineAvailable));
             }
         }
         catch(SQLException e){
@@ -140,16 +140,13 @@ public class PlaylistDAO {
         }
     }
 
-    public void updatePlaylist(String token, String newPlaylistName, int playListID){
+    public void updatePlaylist(String newPlaylistName, int playListID){
         try{
             Connection connection = request.getConnection();
-            PreparedStatement st = connection.prepareStatement("UPDATE PLAYLIST SET P_NAME = ? WHERE P_ID = ? AND U_NAME = ?");
-
-            String userName = dao.getUserByToken(token);
+            PreparedStatement st = connection.prepareStatement("UPDATE PLAYLIST SET P_NAME = ? WHERE P_ID = ?");
 
             st.setString(1,newPlaylistName);
             st.setInt(2,playListID);
-            st.setString(3,userName);
 
             st.execute();
         }
@@ -205,14 +202,14 @@ public class PlaylistDAO {
         }
     }
 
-    public void addTrackToPlaylist(int playlistID, int trackID, boolean offlineAvailable){
+    public void addTrackToPlaylist(int playlistID, TrackModel trackModel){
         try{
             Connection connection = request.getConnection();
             PreparedStatement st = connection.prepareStatement("INSERT INTO TRACK_IN_PLAYLIST VALUES (?,?,?)");
 
             st.setInt(1,playlistID);
-            st.setInt(2,trackID);
-            st.setBoolean(3,offlineAvailable);
+            st.setInt(2, trackModel.getId());
+            st.setBoolean(3, trackModel.getOfflineAvailable());
 
             st.execute();
         }

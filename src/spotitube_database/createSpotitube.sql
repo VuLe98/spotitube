@@ -1,9 +1,9 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2012                    */
-/* Created on:     25-3-2019 19:41:21                           */
+/* Created on:     3-4-2019 00:24:34                            */
 /*==============================================================*/
 
-use Spotitube_Database
+
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
    where r.fkeyid = object_id('PLAYLIST') and o.name = 'FK_PLAYLIST_USER_MET__USER')
@@ -74,19 +74,19 @@ go
 if exists (select 1
             from  sysindexes
            where  id    = object_id('TRACK_IN_PLAYLIST')
-            and   name  = 'TRACK_IN_PLAYLIST2_FK'
+            and   name  = 'TRACK_INFO_FK'
             and   indid > 0
             and   indid < 255)
-   drop index TRACK_IN_PLAYLIST.TRACK_IN_PLAYLIST2_FK
+   drop index TRACK_IN_PLAYLIST.TRACK_INFO_FK
 go
 
 if exists (select 1
             from  sysindexes
            where  id    = object_id('TRACK_IN_PLAYLIST')
-            and   name  = 'TRACK_IN_PLAYLIST_FK'
+            and   name  = 'PLAYLIST_WITH_TRACK_FK'
             and   indid > 0
             and   indid < 255)
-   drop index TRACK_IN_PLAYLIST.TRACK_IN_PLAYLIST_FK
+   drop index TRACK_IN_PLAYLIST.PLAYLIST_WITH_TRACK_FK
 go
 
 if exists (select 1
@@ -333,17 +333,17 @@ create table TRACK_IN_PLAYLIST (
 go
 
 /*==============================================================*/
-/* Index: TRACK_IN_PLAYLIST_FK                                  */
+/* Index: PLAYLIST_WITH_TRACK_FK                                */
 /*==============================================================*/
-create index TRACK_IN_PLAYLIST_FK on TRACK_IN_PLAYLIST (
+create index PLAYLIST_WITH_TRACK_FK on TRACK_IN_PLAYLIST (
 P_ID ASC
 )
 go
 
 /*==============================================================*/
-/* Index: TRACK_IN_PLAYLIST2_FK                                 */
+/* Index: TRACK_INFO_FK                                         */
 /*==============================================================*/
-create index TRACK_IN_PLAYLIST2_FK on TRACK_IN_PLAYLIST (
+create index TRACK_INFO_FK on TRACK_IN_PLAYLIST (
 T_ID ASC
 )
 go
